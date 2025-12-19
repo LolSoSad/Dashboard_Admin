@@ -744,11 +744,12 @@
 <!-- Top-right Agent switcher -->
 <div style="display:flex; justify-content:flex-end; margin-bottom:1rem;">
 <div class="sale-dropdown">
-<button class="sale-toggle-btn" type="button">Team A (Total (Sale&Agent)) ▾</button>
+<button class="sale-toggle-btn" type="button">Team A ▾</button>
 <div class="sale-dropdown-menu">
-<a class="active" href="sale-only.html">Team A (Total (Sale&Agent))</a>
-<a href="agent-only.html">Team A (Agent Performance)</a>
-<a href="sale-manager.html">Team A (Sale Team Performance)</a>
+<a class="active" href="">Team A</a>
+<a href="">Team B</a>
+<a href="">Team C</a>
+<a href="">Team D</a>
 </div>
 </div>
 </div>
@@ -1839,5 +1840,65 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </div>
 </div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const dropdowns = document.querySelectorAll('.sale-dropdown');
+
+  dropdowns.forEach((dd) => {
+    const btn = dd.querySelector('.sale-toggle-btn');
+    const menu = dd.querySelector('.sale-dropdown-menu');
+    if (!btn || !menu) return;
+
+    // a11y
+    if (!btn.id) btn.id = 'saleToggleBtn_' + Math.random().toString(36).slice(2, 9);
+    if (!menu.id) menu.id = 'saleMenu_' + Math.random().toString(36).slice(2, 9);
+    btn.setAttribute('aria-haspopup', 'menu');
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-controls', menu.id);
+
+    const closeAll = (except) => {
+      dropdowns.forEach((x) => {
+        if (x === except) return;
+        x.classList.remove('open');
+        const b = x.querySelector('.sale-toggle-btn');
+        if (b) b.setAttribute('aria-expanded', 'false');
+      });
+    };
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const willOpen = !dd.classList.contains('open');
+      closeAll(dd);
+      dd.classList.toggle('open', willOpen);
+      btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+    });
+
+    // allow link clicks without bubbling to document
+    menu.addEventListener('click', (e) => e.stopPropagation());
+  });
+
+  // click outside closes all
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.sale-dropdown.open').forEach((dd) => {
+      dd.classList.remove('open');
+      const btn = dd.querySelector('.sale-toggle-btn');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Esc closes
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.sale-dropdown.open').forEach((dd) => {
+      dd.classList.remove('open');
+      const btn = dd.querySelector('.sale-toggle-btn');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+});
+</script>
+
 </body>
 </html>
