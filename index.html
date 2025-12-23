@@ -620,6 +620,31 @@
         height: 100% !important;
       }
 
+
+
+      /* === FIX: icons align to top, equal position, and never overflow card === */
+      .dashboard-card{
+        position: relative;
+        overflow: hidden;
+        padding-top: 82px !important; /* reserve space for icon */
+        justify-content: flex-start !important;
+      }
+      .dashboard-card .icon-bg{
+        position: absolute;
+        top: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        margin: 0 !important;        /* remove negative margin-top */
+        z-index: 1;
+      }
+      .dashboard-card .stat-value{
+        margin-top: 6px;
+      }
+      @media (max-width: 520px){
+        .dashboard-card{ padding-top: 76px !important; }
+        .dashboard-card .icon-bg{ top: 12px; width: 48px; height: 48px; }
+      }
+
 </style>
 </head>
 <body class="h-full">
@@ -706,7 +731,7 @@
       </div>
       <div class="stat-breakdown-row">
       <span>ยกเลิกสัญญา </span>
-      <span>20</span>
+      <span>100</span>
       </div>
     </div>
   </div>
@@ -729,15 +754,6 @@
         <canvas id="revenueByTeamChart" class="mini-chart-canvas"></canvas>
       </div>
     </div>
-
-    <!-- ขวา: Adjustment -->
-    <div class="chart-card">
-      <div class="chart-title">ยอด Adjustment (แยกทีม)</div>
-      <div class="chart-subtitle">จำนวนรายการ/เคส</div>
-      <div class="mini-chart-wrap">
-        <canvas id="adjustByTeamChart" class="mini-chart-canvas"></canvas>
-      </div>
-    </div>
   </div>
 </div>
 <!-- ===== END TOP SUMMARY ===== -->
@@ -755,22 +771,6 @@
 </div>
 <!-- Stats Grid -->
 <div class="stats-grid">
-<!-- รถยกที่อยู่ในสัญญาบริการ + Breakdown -->
-<div class="dashboard-card text-center">
-<div class="icon-bg"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAEZElEQVR4AexWbYhUZRR+zjuruPbBKvojAg2Xsq/NgugDIrZf6UK4s9uWWZkUKRStZbmzH4Wboc3OamlF6lIgwRI0zoy6bUb+aMH6YYltFhRSllhCHwgZ7miz956e9+6dab6cnRmCQrycc897znve9zz3nPfjGvzHzwUA/68MaF/LRvL2c3I4uFnDwSXa21iTvXS0r/URfaVtZrat3HZ+BpZx4IpzssgqiLyL6TP2aW/bxfTzSbcg5TztKxWJfAD+YGUgrITkMeR5OvwGlUbUOtvYTtP7bNxPrpiKA6g9s0M64gMFHIqtJ6iFjHKavFT7W2+lBFSjlFdpeHEDZUVUHECJKQjqEERfp4sw8AZKYPqZD9k+BQm0eXoFr4oBeHPX1LxB6UJxl0aa66V971kYYRn0PtoroqoAyOroz4xykCxA4EFKlkFYBplfaRmqAuAFFIzAPqrNVqB2bG81ZagegOoBLzCwQDfeM6vaMlQPAPKZD8DAmXqH11a/DP3B6z29jFdxAMlpyzXSsiLDRbaXhOI/cf4TZJJ7M1/IlMFB2buhOADIFq7w7RmWmkF9ry3gBcl9jU6ocpOVmTIIyj6UjD1M0l/KSaaRi5A24Ifxx4t0fOXbrvblP7uhzDIYuDqY+VLgksxEBQ1Zp6821+WYFYd9fa72P3yRl6Xk1E+gegpllsGWYI4/yWRiNv4yx7Wv5WSaeSyn74MA3NOHcdQ5htqzT8IeSmWWwQIYmyxyVr+9AWdQT3N2xuYR0OXsCyK9G8Kt11EvSRbAsTyPFPWvyXaVU5QkjlV7Qb3A4BF6HicvgGOOUP4J0aK7QV9bdKmGW5ZqX7DdAviSzj5JHDD2Gt5Pw9sQ915KOylFHgk+pmUfID1QvERew9QnCOQAzHgT5RDXQgaAXT/8mVnG8u1GsvYX9g8y1kID0S8w8RziJPwidytUrqDpAagZgItVbDvkbEpCXQbHozQ+A0fnU/ZwQT8F1RhEmmHLIHItA3aRh7l+GFR2QHAZFGs5b72EYk2GAz6F9/DrRdvZXGQ7kDxp6/cNjC7mIH+/s9eS2GPY3AnILh5Im6U7cYTyZfrZrNhDqQ7uFDvmDwDryTPJ3XDdebzOb5HOeES64kdpg0HyxoMWDVzHAkmhIz5iO6R3ZJybmm25hllqmvBBvSdTzhICt+DzM8OhYvgahaQa4MhtqHHmEtzt5E3StetH9uWQkd5e10MzxbELzyASDFoPu68BaQIwKmsSv1qfDPfsYToxzC8OMr2PabhtjoZbV4P/B7QNM9hD0hkbku7Yt/Ls7uJrCBOPReu15Lmh3zn4RUCinPRz7uvvAcwCxmljK5/qZm9lhriQ8BaE+190E8dvw9gN7+S7ltIzAKwT67MBYhqZ3g+or4MGGiS05wTbBSQrB1ISSixnmlkiczfcwJUc/4TNaIFzCYPJ75OOnfulM7FWQvE3pTNqF1G+S47upblj50fSFf0up6NMpQBAmeP+NbfzH8BkqfobAAD//wBz+t8AAAAGSURBVAMAo+bAUORC9y0AAAAASUVORK5CYII=" alt="forklift" style="width:30px;height:30px;display:block;"></div>
-<div class="stat-value">38</div>
-<div class="stat-title">รถยกที่อยู่ในสัญญาบริการ</div>
-<div class="stat-breakdown">
-<div class="stat-breakdown-row">
-<span>LPE200</span>
-<span>25 คัน</span>
-</div>
-<div class="stat-breakdown-row">
-<span>LHE150</span>
-<span>13 คัน</span>
-</div>
-</div>
-</div>
 <!-- จำนวนสัญญาทั้งหมด -->
 <div class="dashboard-card text-center">
 <div class="icon-bg"><i class="fas fa-file-contract"></i></div>
@@ -787,36 +787,52 @@
 </div>
 </div>
 </div>
+<!-- รถยกที่อยู่ในสัญญาบริการ + Breakdown -->
+<div class="dashboard-card text-center">
+<div class="icon-bg"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAEZElEQVR4AexWbYhUZRR+zjuruPbBKvojAg2Xsq/NgugDIrZf6UK4s9uWWZkUKRStZbmzH4Wboc3OamlF6lIgwRI0zoy6bUb+aMH6YYltFhRSllhCHwgZ7miz956e9+6dab6cnRmCQrycc897znve9zz3nPfjGvzHzwUA/68MaF/LRvL2c3I4uFnDwSXa21iTvXS0r/URfaVtZrat3HZ+BpZx4IpzssgqiLyL6TP2aW/bxfTzSbcg5TztKxWJfAD+YGUgrITkMeR5OvwGlUbUOtvYTtP7bNxPrpiKA6g9s0M64gMFHIqtJ6iFjHKavFT7W2+lBFSjlFdpeHEDZUVUHECJKQjqEERfp4sw8AZKYPqZD9k+BQm0eXoFr4oBeHPX1LxB6UJxl0aa66V971kYYRn0PtoroqoAyOroz4xykCxA4EFKlkFYBplfaRmqAuAFFIzAPqrNVqB2bG81ZagegOoBLzCwQDfeM6vaMlQPAPKZD8DAmXqH11a/DP3B6z29jFdxAMlpyzXSsiLDRbaXhOI/cf4TZJJ7M1/IlMFB2buhOADIFq7w7RmWmkF9ry3gBcl9jU6ocpOVmTIIyj6UjD1M0l/KSaaRi5A24Ifxx4t0fOXbrvblP7uhzDIYuDqY+VLgksxEBQ1Zp6821+WYFYd9fa72P3yRl6Xk1E+gegpllsGWYI4/yWRiNv4yx7Wv5WSaeSyn74MA3NOHcdQ5htqzT8IeSmWWwQIYmyxyVr+9AWdQT3N2xuYR0OXsCyK9G8Kt11EvSRbAsTyPFPWvyXaVU5QkjlV7Qb3A4BF6HicvgGOOUP4J0aK7QV9bdKmGW5ZqX7DdAviSzj5JHDD2Gt5Pw9sQ915KOylFHgk+pmUfID1QvERew9QnCOQAzHgT5RDXQgaAXT/8mVnG8u1GsvYX9g8y1kID0S8w8RziJPwidytUrqDpAagZgItVbDvkbEpCXQbHozQ+A0fnU/ZwQT8F1RhEmmHLIHItA3aRh7l+GFR2QHAZFGs5b72EYk2GAz6F9/DrRdvZXGQ7kDxp6/cNjC7mIH+/s9eS2GPY3AnILh5Im6U7cYTyZfrZrNhDqQ7uFDvmDwDryTPJ3XDdebzOb5HOeES64kdpg0HyxoMWDVzHAkmhIz5iO6R3ZJybmm25hllqmvBBvSdTzhICt+DzM8OhYvgahaQa4MhtqHHmEtzt5E3StetH9uWQkd5e10MzxbELzyASDFoPu68BaQIwKmsSv1qfDPfsYToxzC8OMr2PabhtjoZbV4P/B7QNM9hD0hkbku7Yt/Ls7uJrCBOPReu15Lmh3zn4RUCinPRz7uvvAcwCxmljK5/qZm9lhriQ8BaE+190E8dvw9gN7+S7ltIzAKwT67MBYhqZ3g+or4MGGiS05wTbBSQrB1ISSixnmlkiczfcwJUc/4TNaIFzCYPJ75OOnfulM7FWQvE3pTNqF1G+S47upblj50fSFf0up6NMpQBAmeP+NbfzH8BkqfobAAD//wBz+t8AAAAGSURBVAMAo+bAUORC9y0AAAAASUVORK5CYII=" alt="forklift" style="width:30px;height:30px;display:block;"></div>
+<div class="stat-value">38</div>
+<div class="stat-title">รถยกที่อยู่ในสัญญาบริการ</div>
+<div class="stat-breakdown">
+<div class="stat-breakdown-row">
+<span>LPE200</span>
+<span>25 คัน</span>
+</div>
+<div class="stat-breakdown-row">
+<span>LHE150</span>
+<span>13 คัน</span>
+</div>
+</div>
+</div>
 <!-- จำนวนรถที่พร้อมให้บริการ -->
 <div class="dashboard-card text-center">
 <div class="icon-bg"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAEZElEQVR4AexWbYhUZRR+zjuruPbBKvojAg2Xsq/NgugDIrZf6UK4s9uWWZkUKRStZbmzH4Wboc3OamlF6lIgwRI0zoy6bUb+aMH6YYltFhRSllhCHwgZ7miz956e9+6dab6cnRmCQrycc897znve9zz3nPfjGvzHzwUA/68MaF/LRvL2c3I4uFnDwSXa21iTvXS0r/URfaVtZrat3HZ+BpZx4IpzssgqiLyL6TP2aW/bxfTzSbcg5TztKxWJfAD+YGUgrITkMeR5OvwGlUbUOtvYTtP7bNxPrpiKA6g9s0M64gMFHIqtJ6iFjHKavFT7W2+lBFSjlFdpeHEDZUVUHECJKQjqEERfp4sw8AZKYPqZD9k+BQm0eXoFr4oBeHPX1LxB6UJxl0aa66V971kYYRn0PtoroqoAyOroz4xykCxA4EFKlkFYBplfaRmqAuAFFIzAPqrNVqB2bG81ZagegOoBLzCwQDfeM6vaMlQPAPKZD8DAmXqH11a/DP3B6z29jFdxAMlpyzXSsiLDRbaXhOI/cf4TZJJ7M1/IlMFB2buhOADIFq7w7RmWmkF9ry3gBcl9jU6ocpOVmTIIyj6UjD1M0l/KSaaRi5A24Ifxx4t0fOXbrvblP7uhzDIYuDqY+VLgksxEBQ1Zp6821+WYFYd9fa72P3yRl6Xk1E+gegpllsGWYI4/yWRiNv4yx7Wv5WSaeSyn74MA3NOHcdQ5htqzT8IeSmWWwQIYmyxyVr+9AWdQT3N2xuYR0OXsCyK9G8Kt11EvSRbAsTyPFPWvyXaVU5QkjlV7Qb3A4BF6HicvgGOOUP4J0aK7QV9bdKmGW5ZqX7DdAviSzj5JHDD2Gt5Pw9sQ915KOylFHgk+pmUfID1QvERew9QnCOQAzHgT5RDXQgaAXT/8mVnG8u1GsvYX9g8y1kID0S8w8RziJPwidytUrqDpAagZgItVbDvkbEpCXQbHozQ+A0fnU/ZwQT8F1RhEmmHLIHItA3aRh7l+GFR2QHAZFGs5b72EYk2GAz6F9/DrRdvZXGQ7kDxp6/cNjC7mIH+/s9eS2GPY3AnILh5Im6U7cYTyZfrZrNhDqQ7uFDvmDwDryTPJ3XDdebzOb5HOeES64kdpg0HyxoMWDVzHAkmhIz5iO6R3ZJybmm25hllqmvBBvSdTzhICt+DzM8OhYvgahaQa4MhtqHHmEtzt5E3StetH9uWQkd5e10MzxbELzyASDFoPu68BaQIwKmsSv1qfDPfsYToxzC8OMr2PabhtjoZbV4P/B7QNM9hD0hkbku7Yt/Ls7uJrCBOPReu15Lmh3zn4RUCinPRz7uvvAcwCxmljK5/qZm9lhriQ8BaE+190E8dvw9gN7+S7ltIzAKwT67MBYhqZ3g+or4MGGiS05wTbBSQrB1ISSixnmlkiczfcwJUc/4TNaIFzCYPJ75OOnfulM7FWQvE3pTNqF1G+S47upblj50fSFf0up6NMpQBAmeP+NbfzH8BkqfobAAD//wBz+t8AAAAGSURBVAMAo+bAUORC9y0AAAAASUVORK5CYII=" alt="forklift" style="width:30px; height:30px; object-fit:contain;"></div>
 <div class="stat-value">45</div>
 <div class="stat-title">จำนวนรถที่พร้อมให้บริการ</div>
 </div>
-<!-- ลูกค้าทั้งหมด -->
+<!-- บัญชีทั้งหมด -->
 <div class="dashboard-card text-center">
 <div class="icon-bg">☰</div>
 <div class="stat-value">155</div>
-<div class="stat-title">ลูกค้าทั้งหมด</div>
+<div class="stat-title">บัญชีทั้งหมด</div>
 <div class="stat-breakdown">
 <div class="stat-breakdown-row">
-<span>บัญชีนิติบุคคล</span>
-<span>100</span>
+<span>บัญชีลีด</span>
+<span>0</span>
 </div>
 <div class="stat-breakdown-row">
 <span>บัญชีบุคคลธรรมดา</span>
-<span>20</span>
+<span>100</span>
 </div>
 <div class="stat-breakdown-row">
-<span>บัญชีลีด</span>
-<span>35</span>
+<span>บัญชีลูกค้า</span>
+<span>55</span>
 </div>
 </div>
 </div>
 </div>
 <!-- สรุปข้อมูลการเช่า : Compare Sale & Agent + Date Range -->
 <div class="card" id="monthly-sale-summary" style="max-width: 1400px; margin: 0 auto;">
-  <h2 class="card-title">สรุปข้อมูลการเช่า (Sale & Agent)</h2>
+  <h2 class="card-title">สรุปข้อมูลการเช่า (Sale & Agent ใบเสนอราคาเทียบสัญญาบริการ)</h2>
   <p style="font-size: 0.85rem; color: var(--muted-text); margin-top: -0.25rem; margin-bottom: 0.9rem;">
     เปรียบเทียบผลงานรวมระหว่าง <b>Sale</b> และ <b>Agent</b> ตามช่วงวันที่ที่เลือก (จำนวนใบเสนอราคา และจำนวนสัญญาบริการ)
   </p>
@@ -896,6 +912,60 @@
     </div>
   </div>
 </div>
+
+
+<!-- สรุปข้อมูลการเช่า : Compare Sale & Agent (Forklift Qty in Quotation vs Service Contract) -->
+<div class="card" id="forklift-compare-summary" style="max-width: 1400px; margin: 0 auto; margin-top: 15px;">
+  <h2 class="card-title">สรุปข้อมูลการเช่า (Sale &amp; Agent รถยกในใบเสนอราคาเทียบรถยกในสัญญาบริการ)</h2>
+  <p style="font-size: 0.85rem; color: var(--muted-text); margin-top: -0.25rem; margin-bottom: 0.9rem;">
+    เปรียบเทียบจำนวน <b>รถยก</b> ที่อยู่ในใบเสนอราคา และจำนวนรถยกที่อยู่ในสัญญาบริการ แยกตาม <b>Sale</b> และ <b>Agent</b> (ตามช่วงวันที่ที่เลือก)
+  </p>
+
+  <!-- Filters -->
+  <div style="display:flex; flex-wrap:wrap; gap:0.75rem; align-items:flex-end; margin-bottom:1rem;">
+    <div style="min-width:220px;">
+      <div style="font-size:0.78rem; color:var(--muted-text); margin-bottom:0.35rem;">เลือกช่วงวันเริ่มต้น</div>
+      <input id="forkliftStartDate" type="date" style="width:100%; padding:0.55rem 0.75rem; border-radius:10px; border:1px solid #e5e7eb; font-family:'Prompt',sans-serif;">
+    </div>
+    <div style="min-width:220px;">
+      <div style="font-size:0.78rem; color:var(--muted-text); margin-bottom:0.35rem;">เลือกช่วงวันสิ้นสุด</div>
+      <input id="forkliftEndDate" type="date" style="width:100%; padding:0.55rem 0.75rem; border-radius:10px; border:1px solid #e5e7eb; font-family:'Prompt',sans-serif;">
+    </div>
+
+    <div style="min-width:240px; flex:1;">
+      <div style="font-size:0.78rem; color:var(--muted-text); margin-bottom:0.35rem;">มุมมอง</div>
+      <select id="forkliftRoleFilter" style="width:100%; padding:0.55rem 0.75rem; border-radius:10px; border:1px solid #e5e7eb; font-family:'Prompt',sans-serif;">
+        <option value="SALE_AGENT" selected>Sale&amp;Agent (รวม)</option>
+        <option value="SALE">Sale</option>
+        <option value="AGENT">Agent</option>
+      </select>
+    </div>
+
+    <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+      <button id="forkliftApplyBtn" type="button"
+        style="padding:0.6rem 1rem; border-radius:999px; border:none; background:var(--primary-color); color:#fff; font-weight:700; cursor:pointer; box-shadow: 0 4px 10px rgba(31,111,178,0.35);">
+        อัปเดตกราฟ
+      </button>
+      <button id="forkliftResetBtn" type="button"
+        style="padding:0.6rem 1rem; border-radius:999px; border:1px solid #e5e7eb; background:#fff; color:#111827; font-weight:700; cursor:pointer;">
+        รีเซ็ต
+      </button>
+    </div>
+  </div>
+
+  <!-- Summary cards (same style as top) -->
+  <div id="forkliftSummaryCards" style="display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 0.75rem; margin-bottom: 1rem;"></div>
+
+  <!-- Chart -->
+  <div class="chart-card" style="background:#ffffff; border:1px solid #e5edf8;">
+    <div class="chart-title">จำนวนรถยก (ใบเสนอราคา vs สัญญาบริการ)</div>
+    <div class="chart-subtitle">หน่วย: คัน</div>
+    <div class="mini-chart-wrap" style="height:260px;">
+      <canvas id="forkliftCompareChartForkQty" class="mini-chart-canvas"></canvas>
+    </div>
+  </div>
+</div>
+
 
 <!-- Charts -->
 <div class="card" style="max-width: 1400px; margin: 0 auto; margin-top: 15px;">
@@ -1508,7 +1578,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalS = saleGroup.services + agentGroup.services;
     const winner = (saleGroup.quotations >= agentGroup.quotations) ? 'Sale' : 'Agent';
 
-    chipsEl.innerHTML = `
+    
+    const pct = (services, quotations) => {
+      const q = Number(quotations) || 0;
+      const s = Number(services) || 0;
+      if (q <= 0) return '0';
+      const v = (s / q) * 100;
+      const out = v.toFixed(1);
+      return out.endsWith('.0') ? out.slice(0, -2) : out;
+    };
+chipsEl.innerHTML = `
       <div style="padding: 0.75rem 1rem; background:#f9fbff; border-radius:10px; border:1px solid #e5edf8;">
         <div style="font-size: 0.75rem; color:#64748b; margin-bottom:0.25rem;">สรุปรวม (Sale + Agent)</div>
         <div style="font-size:1rem; font-weight:700; color:var(--primary-color);">${totalQ} ใบเสนอราคา / ${totalS} สัญญาบริการ</div>
@@ -1518,11 +1597,13 @@ document.addEventListener('DOMContentLoaded', () => {
       <div style="padding: 0.75rem 1rem; background:#e3f0ff; border-radius:10px; border:1px solid #bfdbfe;">
         <div style="font-size: 0.75rem; color:#1d4ed8; margin-bottom:0.25rem;">Sale (รวม)</div>
         <div style="font-size:1rem; font-weight:700; color:#1d4ed8;">${saleGroup.quotations} ใบเสนอราคา / ${saleGroup.services} สัญญาบริการ</div>
+        <div style=\"font-size:0.75rem; color:#1d4ed8; margin-top:0.25rem;\">อัตราสำเร็จ: ${pct(saleGroup.services, saleGroup.quotations)}%</div>
       </div>
 
       <div style="padding: 0.75rem 1rem; background:#fff7e6; border-radius:10px; border:1px solid #fed7aa;">
         <div style="font-size: 0.75rem; color:#b45309; margin-bottom:0.25rem;">Agent (รวม)</div>
         <div style="font-size:1rem; font-weight:700; color:#b45309;">${agentGroup.quotations} ใบเสนอราคา / ${agentGroup.services} สัญญาบริการ</div>
+        <div style=\"font-size:0.75rem; color:#b45309; margin-top:0.25rem;\">อัตราสำเร็จ: ${pct(agentGroup.services, agentGroup.quotations)}%</div>
       </div>
 
       
@@ -1844,6 +1925,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  // ===== Shared helpers + mock tx (local to this script) =====
+  // Fix: this file has multiple DOMContentLoaded blocks. Variables declared
+  // in one block are not visible in another block, so we re-declare what we need here.
+  const pad2 = (n) => String(n).padStart(2, '0');
+  const hasChart = typeof window.Chart !== 'undefined';
+  const safeDate = (v) => {
+    if (!v) return null;
+    const d = new Date(v);
+    return isNaN(d.getTime()) ? null : d;
+  };
+
+  // Deterministic mock transactions used for "รถยกในใบเสนอราคา" aggregation
+  // Shape: { date:'YYYY-MM-DD', role:'Sale'|'Agent', person, model, qty }
+  const sales = ['คุณเอ','คุณบี','คุณซี','คุณดี','คุณอี'];
+  const agents = ['Agent A','Agent B','Agent C','Agent D','Agent E'];
+  const forkliftModels = ['LHE','LPE','RRE'];
+  const saleForkTx = (() => {
+    const tx = [];
+    const years = [2024, 2025];
+    const days = [3, 12, 24];
+    const groups = [
+      { role: 'Sale', people: sales, seed: 7 },
+      { role: 'Agent', people: agents, seed: 13 },
+    ];
+    years.forEach((y, yi) => {
+      for (let m = 1; m <= 12; m++) {
+        groups.forEach((g, gi) => {
+          g.people.forEach((person, pi) => {
+            forkliftModels.forEach((model, mi) => {
+              const base = (yi * 11 + m * 3 + pi * 4 + mi * 5 + g.seed + gi * 9) % 9 + 1;
+              const boost = model === 'LHE' ? 2 : model === 'RRE' ? 1 : 0;
+              const qty = base + boost;
+              days.forEach((d, di) => {
+                const portion = di === 0 ? 0.40 : di === 1 ? 0.35 : 0.25;
+                const q = Math.max(1, Math.round(qty * portion));
+                tx.push({ date: `${y}-${pad2(m)}-${pad2(d)}`, role: g.role, person, model, qty: q });
+              });
+            });
+          });
+        });
+      }
+    });
+    return tx;
+  })();
+
   const dropdowns = document.querySelectorAll('.sale-dropdown');
 
   dropdowns.forEach((dd) => {
@@ -1897,6 +2023,179 @@ document.addEventListener('DOMContentLoaded', () => {
       if (btn) btn.setAttribute('aria-expanded', 'false');
     });
   });
+
+
+  // ========= Section X: Forklift Qty Compare (Quotation vs Service Contract) =========
+  const fStartEl = document.getElementById('forkliftStartDate');
+  const fEndEl = document.getElementById('forkliftEndDate');
+  const fRoleEl = document.getElementById('forkliftRoleFilter');
+  const fApplyBtn = document.getElementById('forkliftApplyBtn');
+  const fResetBtn = document.getElementById('forkliftResetBtn');
+  const fCardsEl = document.getElementById('forkliftSummaryCards');
+  const fCanvas = document.getElementById('forkliftCompareChartForkQty');
+
+  let forkliftCompareChart = null;
+
+  // default range: full year 2025 (matches mock tx)
+  if (fStartEl && fEndEl) {
+    fStartEl.value = '2025-01-01';
+    fEndEl.value = '2025-12-31';
+  }
+
+  const inRange = (ymd, startStr, endStr) => {
+    const d = safeDate(ymd);
+    const s = safeDate(startStr);
+    const e = safeDate(endStr);
+    if (!d || !s || !e) return true;
+    const t = d.getTime();
+    const a = Math.min(s.getTime(), e.getTime());
+    const b = Math.max(s.getTime(), e.getTime());
+    return t >= a && t <= b;
+  };
+
+  // Derive "contract qty" from quotation qty (mock but deterministic)
+  const contractFromQuote = (q) => Math.max(0, Math.round(q * 0.85));
+
+  const sumForkliftByRole = (role, startStr, endStr) => {
+    if (!Array.isArray(saleForkTx)) return { quote: 0, contract: 0 };
+    const rows = saleForkTx.filter(r => r.role === role && inRange(r.date, startStr, endStr));
+    const quote = rows.reduce((acc, r) => acc + (Number(r.qty) || 0), 0);
+    const contract = rows.reduce((acc, r) => acc + contractFromQuote(Number(r.qty) || 0), 0);
+    return { quote, contract };
+  };
+
+  const renderForkliftCards = (saleAgg, agentAgg, mode) => {
+    if (!fCardsEl) return;
+
+    const saleShow = mode !== 'AGENT';
+    const agentShow = mode !== 'SALE';
+
+    const totalQuote = (saleShow ? saleAgg.quote : 0) + (agentShow ? agentAgg.quote : 0);
+    const totalContract = (saleShow ? saleAgg.contract : 0) + (agentShow ? agentAgg.contract : 0);
+
+    const pct = (contract, quote) => {
+      const q = Number(quote) || 0;
+      const c = Number(contract) || 0;
+      if (q <= 0) return '0';
+      const v = (c / q) * 100;
+      const out = v.toFixed(1);
+      return out.endsWith('.0') ? out.slice(0, -2) : out;
+    };
+
+    const rangeText = (typeof formatRange === 'function')
+      ? formatRange(fStartEl?.value, fEndEl?.value)
+      : '';
+
+    fCardsEl.innerHTML = `
+      <div style="padding: 0.75rem 1rem; background:#f9fbff; border-radius:10px; border:1px solid #e5edf8;">
+        <div style="font-size: 0.75rem; color:#64748b; margin-bottom:0.25rem;">สรุปรวม (Sale + Agent)</div>
+        <div style="font-size:1rem; font-weight:700; color:var(--primary-color);">${totalQuote} คันในใบเสนอราคา / ${totalContract} คันในสัญญาบริการ</div>
+        <div style="font-size:0.75rem; color:#64748b; margin-top:0.25rem;">ช่วงวันที่: ${rangeText || '-'}</div>
+      </div>
+
+      <div style="padding: 0.75rem 1rem; background:#e3f0ff; border-radius:10px; border:1px solid #bfdbfe;">
+        <div style="font-size: 0.75rem; color:#1d4ed8; margin-bottom:0.25rem;">Sale (รวม)</div>
+        <div style="font-size:1rem; font-weight:700; color:#1d4ed8;">${saleShow ? saleAgg.quote : 0} คันในใบเสนอราคา / ${saleShow ? saleAgg.contract : 0} คันในสัญญาบริการ</div>
+        <div style="font-size:0.75rem; color:#1d4ed8; margin-top:0.25rem;">อัตราสำเร็จ: ${pct(saleShow ? saleAgg.contract : 0, saleShow ? saleAgg.quote : 0)}%</div>
+      </div>
+
+      <div style="padding: 0.75rem 1rem; background:#fff7e6; border-radius:10px; border:1px solid #fed7aa;">
+        <div style="font-size: 0.75rem; color:#b45309; margin-bottom:0.25rem;">Agent (รวม)</div>
+        <div style="font-size:1rem; font-weight:700; color:#b45309;">${agentShow ? agentAgg.quote : 0} คันในใบเสนอราคา / ${agentShow ? agentAgg.contract : 0} คันในสัญญาบริการ</div>
+        <div style="font-size:0.75rem; color:#b45309; margin-top:0.25rem;">อัตราสำเร็จ: ${pct(agentShow ? agentAgg.contract : 0, agentShow ? agentAgg.quote : 0)}%</div>
+      </div>
+    `;
+  };
+
+  const renderForkliftChart = (saleAgg, agentAgg, mode) => {
+    if (!fCanvas || !hasChart) return;
+
+    const saleShow = mode !== 'AGENT';
+    const agentShow = mode !== 'SALE';
+
+    const qData = [
+      saleShow ? saleAgg.quote : 0,
+      agentShow ? agentAgg.quote : 0
+    ];
+    const cData = [
+      saleShow ? saleAgg.contract : 0,
+      agentShow ? agentAgg.contract : 0
+    ];
+
+    if (forkliftCompareChart) {
+      forkliftCompareChart.destroy();
+      forkliftCompareChart = null;
+    }
+
+    forkliftCompareChart = new Chart(fCanvas.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: ['Sale', 'Agent'],
+        datasets: [
+          {
+            label: 'รถยกในใบเสนอราคา',
+            data: qData,
+            backgroundColor: 'rgba(31, 111, 178, 0.85)',
+            borderWidth: 0
+          },
+          {
+            label: 'รถยกในสัญญาบริการ',
+            data: cData,
+            backgroundColor: 'rgba(255, 122, 26, 0.90)',
+            borderWidth: 0
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: { usePointStyle: true, font: { family: 'Prompt', size: 12 } }
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            categoryPercentage: 0.65,
+            barPercentage: 0.85
+          },
+          y: {
+            beginAtZero: true,
+            ticks: { precision: 0 }
+          }
+        }
+      }
+    });
+  };
+
+  const updateForkliftSection = () => {
+    const startStr = fStartEl ? fStartEl.value : '';
+    const endStr = fEndEl ? fEndEl.value : '';
+    const mode = fRoleEl ? fRoleEl.value : 'SALE_AGENT';
+
+    const saleAgg = sumForkliftByRole('Sale', startStr, endStr);
+    const agentAgg = sumForkliftByRole('Agent', startStr, endStr);
+
+    renderForkliftCards(saleAgg, agentAgg, mode);
+    renderForkliftChart(saleAgg, agentAgg, mode);
+  };
+
+  if (fApplyBtn) fApplyBtn.addEventListener('click', updateForkliftSection);
+  if (fResetBtn) {
+    fResetBtn.addEventListener('click', () => {
+      if (fStartEl) fStartEl.value = '2025-01-01';
+      if (fEndEl) fEndEl.value = '2025-12-31';
+      if (fRoleEl) fRoleEl.value = 'SALE_AGENT';
+      updateForkliftSection();
+    });
+  }
+  if (fRoleEl) fRoleEl.addEventListener('change', updateForkliftSection);
+
+  // first render
+  updateForkliftSection();
+
 });
 </script>
 
